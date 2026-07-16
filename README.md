@@ -82,23 +82,27 @@ cart API — both fixed and re-verified by both judges before any application co
 written.
 
 The same adversarial process was repeated after implementing each feature PR, for
-**5 Judgment Day rounds in total (1 design round + 4 code/PR rounds)**, all recorded
-in `review-ledger.md`. Across those 5 rounds, **2 real bugs were caught and fixed
-before merge**:
+**6 Judgment Day rounds in total (1 design round + 5 code/PR rounds)**, all recorded
+in `review-ledger.md`. Across those 6 rounds, **3 real CRITICAL bugs were caught and
+fixed before merge**:
 
-1. **Design round** — the missing PDP "back to list" component and the unguarded
-   `ToggleGroup` deselect behavior described above, fixed before any application code
-   was written.
-2. **PR4 (product-detail) round** — `colorCode`/`storageCode` state was initialized
-   only on first mount via `useState(colors[0]?.code)`, so once the real
-   `useProduct()` query resolved asynchronously on the same component instance, the
-   selectors silently stayed `undefined` and "Añadir" could have posted a malformed
-   payload — invisible to the PR's own tests because every mock returned
+1. **Design round — missing back-link component (JD-001).** The design had no
+   component for the spec-mandated PDP "back to list" link at all — the header
+   breadcrumb was the only navigation-back element documented, and it doesn't
+   satisfy that requirement on its own.
+2. **Design round — unguarded `ToggleGroup` deselect (JD-002).** Re-clicking an
+   already-selected storage/color option could clear the selection to empty, letting
+   "Añadir" post an `undefined` `colorCode`/`storageCode` to the cart API.
+3. **PR4 (product-detail) round — stale selector state (JD-008).**
+   `colorCode`/`storageCode` state was initialized only on first mount via
+   `useState(colors[0]?.code)`, so once the real `useProduct()` query resolved
+   asynchronously on the same component instance, the selectors silently stayed
+   `undefined` — invisible to the PR's own tests because every mock returned
    already-resolved data. Both judges independently reproduced it with a real
    pending→success transition; fixed via a render-time state sync plus a regression
    test covering that exact transition.
 
-Every other round (PR2, PR3, PR5) ended in `APPROVED` with only WARNING/SUGGESTION
+Every other round (PR2, PR3, PR5, PR6) ended in `APPROVED` with only WARNING/SUGGESTION
 findings — including PR5's explicit re-verification that the cart's "Reintentar
 resubmits the exact failed payload, not the live selector state" requirement (JD-004)
 was already handled correctly via TanStack Query's own `mutation.variables`. This is

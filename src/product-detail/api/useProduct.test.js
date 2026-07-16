@@ -1,5 +1,5 @@
 import { createElement } from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 import { apiClient } from '@/shared/lib/apiClient.js'
@@ -18,6 +18,10 @@ function createWrapper() {
 }
 
 describe('useProduct', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   it('fetches GET /api/product/:id and exposes the resolved detail', async () => {
     const detail = { id: 'X', brand: 'Acer', model: 'Liquid Z6', price: '120' }
     apiClient.mockResolvedValueOnce(detail)
@@ -40,5 +44,13 @@ describe('useProduct', () => {
     expect(result.current.error.message).toBe(
       'Request to /api/product/X failed with status 500',
     )
+  })
+
+  it('does not fetch when id is undefined (Breadcrumbs calls this unconditionally)', () => {
+    const { result } = renderHook(() => useProduct(undefined), { wrapper: createWrapper() })
+
+    expect(apiClient).not.toHaveBeenCalled()
+    expect(result.current.isPending).toBe(true)
+    expect(result.current.fetchStatus).toBe('idle')
   })
 })
