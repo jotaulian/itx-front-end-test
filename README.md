@@ -5,6 +5,8 @@ product list (PLP) and product detail (PDP) view, backed by the public API
 `https://itx-frontend-test.onrender.com/`. Built with Vite + React (JavaScript, no
 TypeScript).
 
+**Live demo**: https://itx-front-end-test.vercel.app
+
 ## Prerequisites
 
 - Node.js 20 or newer (LTS recommended)
