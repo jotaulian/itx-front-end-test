@@ -97,6 +97,6 @@ Chain strategy: stacked-to-main
 - [x] 6.5 RTL test (JD-007): `BackToListLink` click navigates PDP→`/`
 - [x] 6.6 RTL test (JD-007): header title/icon click navigates PDP→`/`
 - [x] 6.7 RTL test (JD-007): breadcrumb root link navigates PDP→`/`
-- [ ] 6.8 Finalize `README.md`: confirm start/build/test/lint instructions accurate, SDD methodology section links all 5 artifacts
-- [ ] 6.9 Run `npx vitest run`, `npx vite build`, `npx eslint .` — all pass clean
-- [ ] 6.10 Commit: `test(api-cache,app-shell): TTL + revalidation + routing coverage`; `docs: finalize README`
+- [x] 6.8 Finalize `README.md`: confirm start/build/test/lint instructions accurate, SDD methodology section links all 5 artifacts
+- [x] 6.9 Run `npx vitest run`, `npx vite build`, `npx eslint .` — all pass clean
+- [x] 6.10 Commit: `test(api-cache,app-shell): TTL + revalidation + routing coverage`; `docs: finalize README`
