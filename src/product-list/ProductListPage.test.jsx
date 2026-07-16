@@ -1,13 +1,24 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter, RouterProvider, createMemoryRouter } from 'react-router-dom'
+import { queryClient } from '@/shared/lib/queryClient.js'
 import { routes } from '@/shared/router.jsx'
 import { useProducts } from './api/useProducts.js'
 import ProductListPage from './ProductListPage.jsx'
 
 vi.mock('./api/useProducts.js', () => ({
   useProducts: vi.fn(),
+}))
+
+// The real ProductDetailPage (PR4) mounts on navigation to /product/:id and
+// calls the real (unmocked) useProduct(), which needs a QueryClientProvider
+// ancestor. Mock apiClient so no real network call happens in this
+// navigation-only test — same fix applied to shared/router.test.jsx in PR3
+// when the real ProductListPage replaced its own placeholder.
+vi.mock('@/shared/lib/apiClient.js', () => ({
+  apiClient: vi.fn().mockResolvedValue({}),
 }))
 
 const catalog = [
@@ -17,7 +28,11 @@ const catalog = [
 
 function renderAt(path) {
   const router = createMemoryRouter(routes, { initialEntries: [path] })
-  render(<RouterProvider router={router} />)
+  render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
+  )
   return { router }
 }
 

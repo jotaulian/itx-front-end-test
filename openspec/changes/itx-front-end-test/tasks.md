@@ -67,16 +67,16 @@ Chain strategy: stacked-to-main
 
 ## Phase 4: product-detail (PR4)
 
-- [ ] 4.1 TDD `product-detail/api/useProduct.{test,}.js`: `useQuery(['products', id])` → `GET /api/product/:id`
-- [ ] 4.2 TDD `ProductDetailPage.jsx` layout: image left; description above actions, right column (Two-Column Layout)
-- [ ] 4.3 TDD `DescriptionList.{test,}.jsx`: all 11 fields (Marca, Modelo, Precio, CPU, RAM, Sistema Operativo, Resolución de pantalla, Batería, Cámaras, Dimensiones, Peso) from API data
-- [ ] 4.4 TDD `OptionSelector.{test,}.jsx`: 1-option case pre-selected+shown; 2-7 options pre-selected+changeable; >7 options still all-rendered+pre-selected (JD-003 — explicit 1-option and >7-option coverage, not just 2-7)
-- [ ] 4.5 GREEN `OptionSelector.jsx`: `ToggleGroup`, `onValueChange={(v)=>{if(v) setSelection(v);}}` deselect guard; test repeat-click on pressed item keeps prior selection, never `undefined` colorCode/storageCode
-- [ ] 4.6 TDD `BackToListLink.{test,}.jsx`: click navigates PDP→`/`, no reload (Back Navigation to PLP)
-- [ ] 4.7 TDD `AddToCartButton.{test,}.jsx`: click sends `{id,colorCode,storageCode}`; pending state = shadcn `Spinner`+`data-icon`+`disabled` composition, not ad hoc `isPending`/`isLoading` props (JD-005) (Add-to-Cart Trigger)
-- [ ] 4.8 `product-detail/components/DetailSkeleton.jsx` (loading)
-- [ ] 4.9 TDD fetch failure → `ErrorState`, "Reintentar" recovers, no unhandled rejection (API Failure Handling)
-- [ ] 4.10 Commit: `feat(product-detail): PDP layout, selectors, add-to-cart, back link`
+- [x] 4.1 TDD `product-detail/api/useProduct.{test,}.js`: `useQuery(['products', id])` → `GET /api/product/:id`
+- [x] 4.2 TDD `ProductDetailPage.jsx` layout: image left; description above actions, right column (Two-Column Layout)
+- [x] 4.3 TDD `DescriptionList.{test,}.jsx`: all 11 fields (Marca, Modelo, Precio, CPU, RAM, Sistema Operativo, Resolución de pantalla, Batería, Cámaras, Dimensiones, Peso) from API data
+- [x] 4.4 TDD `OptionSelector.{test,}.jsx`: 1-option case pre-selected+shown; 2-7 options pre-selected+changeable; >7 options still all-rendered+pre-selected (JD-003 — explicit 1-option and >7-option coverage, not just 2-7)
+- [x] 4.5 GREEN `OptionSelector.jsx`: `ToggleGroup`, `onValueChange={(v)=>{if(v) setSelection(v);}}` deselect guard; test repeat-click on pressed item keeps prior selection, never `undefined` colorCode/storageCode
+- [x] 4.6 TDD `BackToListLink.{test,}.jsx`: click navigates PDP→`/`, no reload (Back Navigation to PLP)
+- [x] 4.7 TDD `AddToCartButton.{test,}.jsx`: click sends `{id,colorCode,storageCode}`; pending state = shadcn `Spinner`+`data-icon`+`disabled` composition, not ad hoc `isPending`/`isLoading` props (JD-005) (Add-to-Cart Trigger)
+- [x] 4.8 `product-detail/components/DetailSkeleton.jsx` (loading)
+- [x] 4.9 TDD fetch failure → `ErrorState`, "Reintentar" recovers, no unhandled rejection (API Failure Handling)
+- [x] 4.10 Commit: `feat(product-detail): PDP layout, selectors, add-to-cart, back link`
 
 ## Phase 5: cart (PR5)
 
