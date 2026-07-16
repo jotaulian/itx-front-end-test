@@ -56,14 +56,14 @@ Chain strategy: stacked-to-main
 
 ## Phase 3: product-list (PR3)
 
-- [ ] 3.1 TDD `product-list/api/useProducts.{test,}.js`: `useQuery(['products'])` → `GET /api/product`
-- [ ] 3.2 TDD `ProductCard`/`ProductGrid.{test,}.jsx`: image/Marca/Modelo/Precio, ≤4/row wide, fewer per row narrow (Product Grid Rendering)
-- [ ] 3.3 `product-list/components/ProductGridSkeleton.jsx` (loading, `Skeleton`)
-- [ ] 3.4 TDD `SearchBar.{test,}.jsx` + `useMemo` filter in `ProductListPage.jsx`: filters Marca+Modelo per keystroke, no submit (Real-Time Search Filter)
-- [ ] 3.5 TDD empty-search case: zero matches renders shared `Empty`, input stays editable, no throw (Empty Search Result)
-- [ ] 3.6 TDD click card → `/product/X` router `Link`, no reload (Navigation to Product Detail)
-- [ ] 3.7 TDD fetch failure → `ErrorState`, "Reintentar" → `refetch()` recovers, no unhandled rejection (API Failure Handling)
-- [ ] 3.8 Commit: `feat(product-list): PLP grid, search, empty/error states, navigation`
+- [x] 3.1 TDD `product-list/api/useProducts.{test,}.js`: `useQuery(['products'])` → `GET /api/product`
+- [x] 3.2 TDD `ProductCard`/`ProductGrid.{test,}.jsx`: image/Marca/Modelo/Precio, ≤4/row wide, fewer per row narrow (Product Grid Rendering)
+- [x] 3.3 `product-list/components/ProductGridSkeleton.jsx` (loading, `Skeleton`)
+- [x] 3.4 TDD `SearchBar.{test,}.jsx` + `useMemo` filter in `ProductListPage.jsx`: filters Marca+Modelo per keystroke, no submit (Real-Time Search Filter)
+- [x] 3.5 TDD empty-search case: zero matches renders shared `Empty`, input stays editable, no throw (Empty Search Result)
+- [x] 3.6 TDD click card → `/product/X` router `Link`, no reload (Navigation to Product Detail)
+- [x] 3.7 TDD fetch failure → `ErrorState`, "Reintentar" → `refetch()` recovers, no unhandled rejection (API Failure Handling)
+- [x] 3.8 Commit: `feat(product-list): PLP grid, search, empty/error states, navigation`
 
 ## Phase 4: product-detail (PR4)
 

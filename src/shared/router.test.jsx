@@ -1,12 +1,26 @@
 import { act } from 'react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
+import { queryClient } from './lib/queryClient.js'
 import { routes } from './router.jsx'
+
+// The real ProductListPage (PR3) fetches via useProducts(), so this
+// router-only test needs a QueryClientProvider ancestor. It mocks
+// apiClient so no real network call happens here — that behavior is
+// covered by useProducts.test.js and ProductListPage.test.jsx.
+vi.mock('@/shared/lib/apiClient.js', () => ({
+  apiClient: vi.fn().mockResolvedValue([]),
+}))
 
 function renderAt(path) {
   const router = createMemoryRouter(routes, { initialEntries: [path] })
-  render(<RouterProvider router={router} />)
+  render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
+  )
   return router
 }
 
