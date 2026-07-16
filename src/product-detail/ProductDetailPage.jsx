@@ -92,20 +92,25 @@ function ProductDetailPage() {
           <img
             src={product.imgUrl}
             alt={`${product.brand} ${product.model}`}
-            className="aspect-square w-full rounded-xl object-contain"
+            className="aspect-[4/3] w-full rounded-xl object-contain"
           />
 
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-10">
             <DescriptionList product={product} />
 
             <div className="flex flex-col gap-4">
               <OptionSelector
-                label="Almacenamiento"
+                label="Selecciona el almacenamiento"
                 options={storages}
                 value={storageCode}
                 onChange={setStorageCode}
               />
-              <OptionSelector label="Color" options={colors} value={colorCode} onChange={setColorCode} />
+              <OptionSelector
+                label="Selecciona el color"
+                options={colors}
+                value={colorCode}
+                onChange={setColorCode}
+              />
               {isAddError && (
                 <ErrorState
                   message="No se pudo añadir el producto al carrito."

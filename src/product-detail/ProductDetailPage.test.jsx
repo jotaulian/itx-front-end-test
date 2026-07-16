@@ -77,7 +77,7 @@ describe('ProductDetailPage', () => {
     renderAt('/product/X')
 
     const image = screen.getByRole('img', { name: 'Acer Iconia Talk S' })
-    const description = screen.getByText('Marca').closest('dl')
+    const description = screen.getByTestId('description')
     const actions = screen.getByRole('button', { name: /añadir/i })
 
     // Image occupies the left column: its layout container is a sibling of
