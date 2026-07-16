@@ -43,16 +43,16 @@ Chain strategy: stacked-to-main
 
 ## Phase 2: app-shell (PR2)
 
-- [ ] 2.1 TDD `shared/lib/queryClient.{test,}.js`: staleTime/gcTime=3_600_000, retry:1 (api-cache TTL)
-- [ ] 2.2 `shared/lib/apiClient.js` — fetch wrapper, `BASE_URL`
-- [ ] 2.3 TDD `shared/router.{test.jsx,jsx}`: `/` ↔ `/product/:id` via `createBrowserRouter`, URL updates, no full reload (Client-Side Routing)
-- [ ] 2.4 TDD `shared/components/Header.{test,}.jsx`: title/icon links `/`, `Badge` cart count same position both routes (Shared Header, Cart Count Display)
-- [ ] 2.5 TDD `shared/components/Breadcrumbs.{test,}.jsx`: 1 level on `/`, 2 levels (link+current) on `/product/:id` (Breadcrumbs)
-- [ ] 2.6 TDD `shared/components/ErrorState.{test,}.jsx`: message + "Reintentar", click invokes retry callback (`Alert`+`Button`)
-- [ ] 2.7 TDD `shared/components/Empty.{test,}.jsx`: plain-text message, no throw — lives in `shared/components/` per JD-006 (matches `ErrorState`, not under `product-list/`)
-- [ ] 2.8 `App.jsx` (`<Header/>`+`<Outlet/>`), `main.jsx` (QueryClientProvider+CartProvider+RouterProvider)
-- [ ] 2.9 REFACTOR: extract shared shadcn `ui/` primitives used by 2.4-2.7
-- [ ] 2.10 Commit: `feat(app-shell): routing, header, breadcrumbs, shared error/empty UI`
+- [x] 2.1 TDD `shared/lib/queryClient.{test,}.js`: staleTime/gcTime=3_600_000, retry:1 (api-cache TTL)
+- [x] 2.2 `shared/lib/apiClient.js` — fetch wrapper, `BASE_URL`
+- [x] 2.3 TDD `shared/router.{test.jsx,jsx}`: `/` ↔ `/product/:id` via `createBrowserRouter`, URL updates, no full reload (Client-Side Routing)
+- [x] 2.4 TDD `shared/components/Header.{test,}.jsx`: title/icon links `/`, `Badge` cart count same position both routes (Shared Header, Cart Count Display)
+- [x] 2.5 TDD `shared/components/Breadcrumbs.{test,}.jsx`: 1 level on `/`, 2 levels (link+current) on `/product/:id` (Breadcrumbs)
+- [x] 2.6 TDD `shared/components/ErrorState.{test,}.jsx`: message + "Reintentar", click invokes retry callback (`Alert`+`Button`)
+- [x] 2.7 TDD `shared/components/Empty.{test,}.jsx`: plain-text message, no throw — lives in `shared/components/` per JD-006 (matches `ErrorState`, not under `product-list/`)
+- [x] 2.8 `App.jsx` (`<Header/>`+`<Outlet/>`), `main.jsx` (QueryClientProvider+CartProvider+RouterProvider)
+- [x] 2.9 REFACTOR: extract shared shadcn `ui/` primitives used by 2.4-2.7
+- [x] 2.10 Commit: `feat(app-shell): routing, header, breadcrumbs, shared error/empty UI`
 
 ## Phase 3: product-list (PR3)
 
