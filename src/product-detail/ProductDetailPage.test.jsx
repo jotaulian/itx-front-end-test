@@ -1,6 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter, RouterProvider, createMemoryRouter } from 'react-router-dom'
 import { routes } from '@/shared/router.jsx'
 import { useProduct } from './api/useProduct.js'
@@ -137,5 +138,51 @@ describe('ProductDetailPage', () => {
       screen.queryByText('No se pudo cargar el detalle del producto.'),
     ).not.toBeInTheDocument()
     expect(screen.getByText('Marca')).toBeInTheDocument()
+  })
+
+  // Regression for JD-008: useState's initializer only runs on first mount,
+  // so when the real useProduct() mounts pending (colors/storages = []) and
+  // then resolves on the SAME component instance, colorCode/storageCode must
+  // still end up pre-selected. Uses the real useProduct implementation (via
+  // the existing mock's mockImplementation) with a fetch that resolves after
+  // the initial render, exercising the exact pending -> success transition
+  // that a pre-resolved mock (like the tests above) never exercises.
+  it('pre-selects the first color and storage once the real product query resolves after the initial pending render (JD-008)', async () => {
+    const { useProduct: realUseProduct } = await vi.importActual('./api/useProduct.js')
+    useProduct.mockImplementation(realUseProduct)
+
+    let resolveFetch
+    const fetchMock = vi.fn(
+      () =>
+        new Promise((resolve) => {
+          resolveFetch = () => resolve({ ok: true, json: () => Promise.resolve(product) })
+        }),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    const router = createMemoryRouter(
+      [{ path: '/product/:id', element: <ProductDetailPage /> }],
+      { initialEntries: ['/product/X'] },
+    )
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>,
+    )
+
+    // First render is pending — real useProduct() hasn't resolved yet.
+    expect(screen.getByTestId('detail-skeleton')).toBeInTheDocument()
+
+    resolveFetch()
+
+    await waitFor(() => expect(screen.queryByTestId('detail-skeleton')).not.toBeInTheDocument())
+
+    expect(await screen.findByRole('button', { name: 'Black' })).toHaveAttribute('data-pressed')
+    expect(screen.getByRole('button', { name: '16 GB' })).toHaveAttribute('data-pressed')
+
+    vi.unstubAllGlobals()
+    queryClient.clear()
   })
 })

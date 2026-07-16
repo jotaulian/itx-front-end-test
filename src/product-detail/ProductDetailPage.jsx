@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ErrorState from '@/shared/components/ErrorState.jsx'
 import { useProduct } from './api/useProduct.js'
@@ -15,11 +15,45 @@ function ProductDetailPage() {
   const { id } = useParams()
   const { data: product, isPending, isError, refetch } = useProduct(id)
 
-  const colors = product?.options?.colors ?? []
-  const storages = product?.options?.storages ?? []
+  // Memoized so the reference only changes when `product` itself changes
+  // (not on every render) — required for the render-time sync below to
+  // settle instead of looping.
+  const colors = useMemo(() => product?.options?.colors ?? [], [product])
+  const storages = useMemo(() => product?.options?.storages ?? [], [product])
 
   const [colorCode, setColorCode] = useState(colors[0]?.code)
   const [storageCode, setStorageCode] = useState(storages[0]?.code)
+
+  // useState's initializer only runs on first mount, but the real
+  // useProduct() mounts with isPending:true (colors/storages = []) before
+  // resolving on this same component instance — the initializer above locks
+  // colorCode/storageCode to undefined forever. Sync the default here once
+  // options actually become available, without clobbering a selection the
+  // user already made (spec: pre-select a default option, single-option
+  // case included). Adjusted directly during render ("Adjusting state when a
+  // prop changes" — react.dev), not in a useEffect, so it settles in the
+  // same render pass instead of causing an extra commit. Codes are compared
+  // via String() because OptionSelector's ToggleGroup reports string values
+  // on user selection while colors[]/storages[] carry the raw (often
+  // numeric) codes from the API.
+  const [syncedColors, setSyncedColors] = useState(colors)
+  if (colors !== syncedColors) {
+    setSyncedColors(colors)
+    if (colors.length > 0 && !colors.some((color) => String(color.code) === String(colorCode))) {
+      setColorCode(colors[0].code)
+    }
+  }
+
+  const [syncedStorages, setSyncedStorages] = useState(storages)
+  if (storages !== syncedStorages) {
+    setSyncedStorages(storages)
+    if (
+      storages.length > 0 &&
+      !storages.some((storage) => String(storage.code) === String(storageCode))
+    ) {
+      setStorageCode(storages[0].code)
+    }
+  }
 
   // Real POST /api/cart mutation wiring lands in PR5 (cart's
   // useAddToCart) — this button only triggers the action for now, mirroring
