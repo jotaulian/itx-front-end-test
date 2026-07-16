@@ -42,3 +42,5 @@ INTERVIEW_PREP.md
 .agents/
 .atl/
 skills-lock.json
+.vercel
+.env*
