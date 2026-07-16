@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
@@ -56,5 +56,35 @@ describe('Header', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(screen.getByTestId('cart-count-badge')).toHaveTextContent('3')
+  })
+
+  it('hides the breadcrumb row once the page scrolls away from the top', () => {
+    renderAt('/')
+
+    expect(screen.getByTestId('breadcrumb-row')).toHaveClass('opacity-100')
+
+    act(() => {
+      Object.defineProperty(window, 'scrollY', { value: 120, configurable: true })
+      window.dispatchEvent(new Event('scroll'))
+    })
+
+    expect(screen.getByTestId('breadcrumb-row')).toHaveClass('opacity-0')
+  })
+
+  it('shows the breadcrumb row again once scrolled back to the top', () => {
+    renderAt('/')
+
+    act(() => {
+      Object.defineProperty(window, 'scrollY', { value: 120, configurable: true })
+      window.dispatchEvent(new Event('scroll'))
+    })
+    expect(screen.getByTestId('breadcrumb-row')).toHaveClass('opacity-0')
+
+    act(() => {
+      Object.defineProperty(window, 'scrollY', { value: 0, configurable: true })
+      window.dispatchEvent(new Event('scroll'))
+    })
+
+    expect(screen.getByTestId('breadcrumb-row')).toHaveClass('opacity-100')
   })
 })
