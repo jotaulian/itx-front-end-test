@@ -3,6 +3,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter, RouterProvider, createMemoryRouter } from 'react-router-dom'
+import { CartProvider } from '@/cart/CartContext.jsx'
 import { queryClient } from '@/shared/lib/queryClient.js'
 import { routes } from '@/shared/router.jsx'
 import { useProducts } from './api/useProducts.js'
@@ -30,7 +31,9 @@ function renderAt(path) {
   const router = createMemoryRouter(routes, { initialEntries: [path] })
   render(
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </QueryClientProvider>,
   )
   return { router }

@@ -80,13 +80,13 @@ Chain strategy: stacked-to-main
 
 ## Phase 5: cart (PR5)
 
-- [ ] 5.1 TDD `cart/CartContext.{test.jsx,jsx}` + `useCart.js`: lazy-inits `count` from `localStorage`
-- [ ] 5.2 TDD `cart/api/useAddToCart.{test,}.js`: POSTs exact `{id,colorCode,storageCode}`, `retry:0`, `onSuccess` overwrites count from response, no local increment (Add-to-Cart Request, Server Count as Source of Truth)
-- [ ] 5.3 TDD persistence: count written to `localStorage` on success, survives reload before next add (Cart Count Persistence)
-- [ ] 5.4 TDD cross-view: add on PDP updates Header immediately, stays updated after nav to PLP (App-Wide Count Exposure)
-- [ ] 5.5 TDD POST failure: `ErrorState` shown, count unchanged, no unhandled rejection; capture failed payload `P` at `mutate()` call time (mutation variables), NOT re-derived from live selector state; "Reintentar" resubmits exact `P` (JD-004), resolves `{count:N}` clears error (Add-to-Cart Failure Handling)
-- [ ] 5.6 Confirm no cart page/drawer; header count click has no cart-opening behavior (No Dedicated Cart View)
-- [ ] 5.7 Commit: `feat(cart): context, add-to-cart mutation, persistence, header wiring`
+- [x] 5.1 TDD `cart/CartContext.{test.jsx,jsx}` + `useCart.js`: lazy-inits `count` from `localStorage`
+- [x] 5.2 TDD `cart/api/useAddToCart.{test,}.js`: POSTs exact `{id,colorCode,storageCode}`, `retry:0`, `onSuccess` overwrites count from response, no local increment (Add-to-Cart Request, Server Count as Source of Truth)
+- [x] 5.3 TDD persistence: count written to `localStorage` on success, survives reload before next add (Cart Count Persistence)
+- [x] 5.4 TDD cross-view: add on PDP updates Header immediately, stays updated after nav to PLP (App-Wide Count Exposure)
+- [x] 5.5 TDD POST failure: `ErrorState` shown, count unchanged, no unhandled rejection; capture failed payload `P` at `mutate()` call time (mutation variables), NOT re-derived from live selector state; "Reintentar" resubmits exact `P` (JD-004), resolves `{count:N}` clears error (Add-to-Cart Failure Handling)
+- [x] 5.6 Confirm no cart page/drawer; header count click has no cart-opening behavior (No Dedicated Cart View)
+- [x] 5.7 Commit: `feat(cart): context, add-to-cart mutation, persistence, header wiring`
 
 ## Phase 6: api-cache tests, routing coverage, finalize (PR6)
 

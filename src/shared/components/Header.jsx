@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom'
 import { ShoppingBagIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { useCart } from '@/cart/useCart.js'
 import Breadcrumbs from './Breadcrumbs.jsx'
 
-// Rendered by the App layout route on every view. cartCount defaults to 0 so
-// this component works standalone before PR5 wires the real CartContext.
-function Header({ cartCount = 0 }) {
+// Rendered by the App layout route on every view. Cart count is read from
+// the app-wide CartContext (cart spec: "App-Wide Count Exposure via
+// Context") instead of being threaded down as a prop. The badge is a
+// passive display only — no onClick — per the spec's "No Dedicated Cart
+// View" requirement (clicking it must not open any cart UI).
+function Header() {
+  const { count } = useCart()
+
   return (
     <header className="flex items-center justify-between gap-4 border-b p-4">
       <div className="flex items-center gap-4">
@@ -15,7 +21,7 @@ function Header({ cartCount = 0 }) {
         </Link>
         <Breadcrumbs />
       </div>
-      <Badge data-testid="cart-count-badge">{cartCount}</Badge>
+      <Badge data-testid="cart-count-badge">{count}</Badge>
     </header>
   )
 }

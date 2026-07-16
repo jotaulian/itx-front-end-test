@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ErrorState from '@/shared/components/ErrorState.jsx'
+import { useAddToCart } from '@/cart/api/useAddToCart.js'
 import { useProduct } from './api/useProduct.js'
 import AddToCartButton from './components/AddToCartButton.jsx'
 import BackToListLink from './components/BackToListLink.jsx'
@@ -55,12 +56,25 @@ function ProductDetailPage() {
     }
   }
 
-  // Real POST /api/cart mutation wiring lands in PR5 (cart's
-  // useAddToCart) — this button only triggers the action for now, mirroring
-  // App.jsx's cartCount={0} placeholder pattern until the real dependency
-  // exists.
+  // useMutation exposes `variables` as the exact payload from the last
+  // mutate() call, and it stays set after an error (until the next mutate).
+  // Reintentar resubmits THAT captured payload, not whatever the selectors
+  // currently show — the user could have changed the selection between the
+  // failed attempt and clicking retry (cart spec: "Reintentar resubmits the
+  // same request payload"; JD-004).
+  const {
+    mutate: addToCart,
+    isPending: isAdding,
+    isError: isAddError,
+    variables: lastAddPayload,
+  } = useAddToCart()
+
   function handleAddToCart(payload) {
-    console.info('Add to cart (placeholder until PR5 wires useAddToCart):', payload)
+    addToCart(payload)
+  }
+
+  function handleRetryAddToCart() {
+    addToCart(lastAddPayload)
   }
 
   return (
@@ -92,11 +106,17 @@ function ProductDetailPage() {
                 onChange={setStorageCode}
               />
               <OptionSelector label="Color" options={colors} value={colorCode} onChange={setColorCode} />
+              {isAddError && (
+                <ErrorState
+                  message="No se pudo añadir el producto al carrito."
+                  onRetry={handleRetryAddToCart}
+                />
+              )}
               <AddToCartButton
                 id={id}
                 colorCode={String(colorCode)}
                 storageCode={String(storageCode)}
-                isPending={false}
+                isPending={isAdding}
                 onAddToCart={handleAddToCart}
               />
             </div>

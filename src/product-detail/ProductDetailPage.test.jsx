@@ -3,12 +3,18 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter, RouterProvider, createMemoryRouter } from 'react-router-dom'
+import { CartProvider } from '@/cart/CartContext.jsx'
 import { routes } from '@/shared/router.jsx'
+import { useAddToCart } from '@/cart/api/useAddToCart.js'
 import { useProduct } from './api/useProduct.js'
 import ProductDetailPage from './ProductDetailPage.jsx'
 
 vi.mock('./api/useProduct.js', () => ({
   useProduct: vi.fn(),
+}))
+
+vi.mock('@/cart/api/useAddToCart.js', () => ({
+  useAddToCart: vi.fn(),
 }))
 
 const product = {
@@ -37,12 +43,23 @@ const product = {
 
 function renderAt(path) {
   const router = createMemoryRouter(routes, { initialEntries: [path] })
-  render(<RouterProvider router={router} />)
+  render(
+    <CartProvider>
+      <RouterProvider router={router} />
+    </CartProvider>,
+  )
   return { router }
 }
 
 beforeEach(() => {
   useProduct.mockReset()
+  useAddToCart.mockReset()
+  useAddToCart.mockReturnValue({
+    mutate: vi.fn(),
+    isPending: false,
+    isError: false,
+    variables: undefined,
+  })
 })
 
 describe('ProductDetailPage', () => {
@@ -95,22 +112,78 @@ describe('ProductDetailPage', () => {
     expect(screen.getByRole('link', { name: /volver al listado/i })).toBeInTheDocument()
   })
 
-  it('calls onAddToCart-driven payload with the current selector state when Añadir is clicked', async () => {
+  it('calls the add-to-cart mutation with the payload built from current selector state when Añadir is clicked', async () => {
     useProduct.mockReturnValue({ data: product, isPending: false, isError: false, refetch: vi.fn() })
+    const mutate = vi.fn()
+    useAddToCart.mockReturnValue({ mutate, isPending: false, isError: false, variables: undefined })
     const user = userEvent.setup()
-    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {})
 
     renderAt('/product/X')
 
     await user.click(screen.getByRole('button', { name: 'White' }))
     await user.click(screen.getByRole('button', { name: /añadir/i }))
 
-    expect(infoSpy).toHaveBeenCalledWith(
-      expect.stringContaining('PR5'),
-      { id: 'X', colorCode: '1001', storageCode: '2000' },
-    )
-    infoSpy.mockRestore()
+    expect(mutate).toHaveBeenCalledTimes(1)
+    expect(mutate).toHaveBeenCalledWith({ id: 'X', colorCode: '1001', storageCode: '2000' })
   })
+
+  it("passes the mutation's isPending through to AddToCartButton", () => {
+    useProduct.mockReturnValue({ data: product, isPending: false, isError: false, refetch: vi.fn() })
+    useAddToCart.mockReturnValue({ mutate: vi.fn(), isPending: true, isError: false, variables: undefined })
+
+    renderAt('/product/X')
+
+    expect(screen.getByRole('button', { name: /añadir/i })).toBeDisabled()
+  })
+
+  it('shows a cart-specific ErrorState when the add-to-cart mutation fails (Add-to-Cart Failure Handling)', () => {
+    useProduct.mockReturnValue({ data: product, isPending: false, isError: false, refetch: vi.fn() })
+    useAddToCart.mockReturnValue({
+      mutate: vi.fn(),
+      isPending: false,
+      isError: true,
+      variables: { id: 'X', colorCode: '1000', storageCode: '2000' },
+    })
+
+    renderAt('/product/X')
+
+    expect(screen.getByText('No se pudo añadir el producto al carrito.')).toBeInTheDocument()
+  })
+
+  it('hides the cart ErrorState once the add-to-cart mutation is no longer in an error state', () => {
+    useProduct.mockReturnValue({ data: product, isPending: false, isError: false, refetch: vi.fn() })
+    useAddToCart.mockReturnValue({ mutate: vi.fn(), isPending: false, isError: false, variables: undefined })
+
+    renderAt('/product/X')
+
+    expect(screen.queryByText('No se pudo añadir el producto al carrito.')).not.toBeInTheDocument()
+  })
+
+  it(
+    "Reintentar resubmits the exact captured mutation payload (JD-004), not the current selector " +
+      'state, since the user may have changed the selection between the failed attempt and the retry',
+    async () => {
+      useProduct.mockReturnValue({ data: product, isPending: false, isError: false, refetch: vi.fn() })
+      const mutate = vi.fn()
+      const capturedPayload = { id: 'X', colorCode: '1000', storageCode: '2000' }
+      useAddToCart.mockReturnValue({
+        mutate,
+        isPending: false,
+        isError: true,
+        variables: capturedPayload,
+      })
+      const user = userEvent.setup()
+
+      renderAt('/product/X')
+
+      // User changes the selection AFTER the failure, before clicking retry.
+      await user.click(screen.getByRole('button', { name: 'White' }))
+
+      await user.click(screen.getByRole('button', { name: 'Reintentar' }))
+
+      expect(mutate).toHaveBeenCalledWith(capturedPayload)
+    },
+  )
 
   it('shows the shared ErrorState on fetch failure and recovers via Reintentar -> refetch, no unhandled rejection', async () => {
     const refetch = vi.fn()
