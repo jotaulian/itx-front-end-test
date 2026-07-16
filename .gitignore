@@ -1,0 +1,44 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Test / coverage
+coverage
+
+# Env
+*.local
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Personal interview-prep notes — not part of the deliverable
+INTERVIEW_PREP.md
+
+# Local AI-agent tooling caches (Claude Code skills/plugin registry) —
+# infrastructure for building this project, not part of the app deliverable.
+# openspec/ is intentionally NOT listed here: it is committed as the SDD
+# documentation trail (see README "Development Methodology" section).
+.claude/
+.agents/
+.atl/
+skills-lock.json

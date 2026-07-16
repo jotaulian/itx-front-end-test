@@ -1,0 +1,73 @@
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Project: inditex (Front End Test — Inditex)
+  Status: brand-new project, no code yet; stack below is PLANNED, not yet scaffolded.
+  Source brief: "1. ITX - Front End Test 1.pdf" (front-end technical test)
+  Tech stack: Vite + React (JS, no TypeScript), React Router, Tailwind CSS + shadcn/ui,
+    TanStack Query (staleTime 1h for cache TTL requirement)
+  Architecture: Screaming Architecture by feature — product-list/, product-detail/, cart/, shared/
+  Testing: Vitest + React Testing Library, ESLint for lint
+  Notable behavior: cart count persisted via localStorage + Context, updated from POST /api/cart response
+
+strict_tdd: true
+
+testing:
+  test_runner:
+    command: "npx vitest"
+    framework: Vitest
+    status: planned # not yet installed — project has no package.json
+  layers:
+    unit:
+      available: false
+      tool: Vitest (planned)
+    integration:
+      available: false
+      tool: React Testing Library (planned)
+    e2e:
+      available: false
+      tool: null
+  coverage:
+    available: false
+    command: "npx vitest --coverage (planned)"
+  quality:
+    linter:
+      available: false
+      command: "npx eslint . (planned)"
+    type_checker:
+      available: false
+      command: null # no TypeScript in this project
+    formatter:
+      available: false
+      command: null
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Reference the source brief ("1. ITX - Front End Test 1.pdf") for scope decisions
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Respect the declared cache TTL requirement (TanStack Query staleTime 1h)
+  design:
+    - Include sequence diagrams for complex flows (e.g. cart update from POST /api/cart)
+    - Document architecture decisions with rationale
+    - Follow Screaming Architecture by feature: product-list/, product-detail/, cart/, shared/
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    guidelines:
+      - Follow Screaming Architecture folder structure by feature
+      - Use functional React components, no TypeScript
+      - Use TanStack Query for all data fetching/caching
+      - Persist cart count via localStorage + Context
+    tdd: true # Strict TDD Mode enabled — RED-GREEN-REFACTOR required
+    test_command: "npx vitest"
+  verify:
+    test_command: "npx vitest run"
+    build_command: "npx vite build"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
