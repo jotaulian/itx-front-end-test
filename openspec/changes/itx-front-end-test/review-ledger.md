@@ -77,3 +77,41 @@ Two blind judges (A, B) reviewed the real implemented diff against `specs/produc
 **JUDGMENT: APPROVED ✅**
 
 Skill Resolution — Judge A: fallback-path. Judge B: paths-injected.
+
+## Judgment Day — Round 1 — Target: PR5 code diff (commit `7f91c00`, cart)
+
+Two blind judges (A, B) reviewed the real implemented diff (CartContext, useCart, useAddToCart, main.jsx/App.jsx/Header.jsx/ProductDetailPage.jsx wiring) against `specs/cart/spec.md` and `design.md`, with the JD-004 fix as the primary target of scrutiny. Both applied extra skepticism per the PR4 precedent (tests that mock already-resolved data prove nothing about real async lifecycles) and both independently traced the retry-payload scenario by hand (select A → fail → change to B → click Reintentar → must resubmit A).
+
+| id | lens | location | severity | status | evidence |
+|---|---|---|---|---|---|
+| JD-A-002 | judgment-day | `src/cart/CartContext.jsx:9-11,25` | WARNING | info | No try/catch around `localStorage` access; a throw (private browsing, quota, disabled storage) in the lazy `useState` initializer would blow up the entire app shell since `CartProvider` wraps `RouterProvider`. Low probability, real blast radius. |
+| JD-A-003 | judgment-day | `src/cart/CartContext.jsx:22-26` | SUGGESTION | info | Context value/`setCount` recreated every render (no `useMemo`/`useCallback`) — latent re-render cost if the provider tree grows, not currently user-impacting. |
+| JD-B-001 / JD-A-001 | judgment-day | `src/cart/cartFlow.test.jsx:78-116` | SUGGESTION | info | The e2e JD-004 retry test's fixture has only one color/storage option, so it can't itself distinguish "resubmits captured payload" from "resubmits live state" — both judges independently found the REAL proof is the unit test in `ProductDetailPage.test.jsx` (genuinely changes selection before retry, asserts original payload resubmitted), which is sound. Misleading test comment/coverage gap, not a functional defect. |
+
+**Confirmed CRITICAL/BLOCKER**: 0
+**Suspect**: 0
+**INFO**: 3 (JD-A-002, JD-A-003, merged JD-B-001/JD-A-001)
+
+Both judges independently confirmed via real (not pre-resolved-mock) async-lifecycle tests: server count as source of truth (never locally incremented), explicit `retry:0` on the mutation, JD-004 genuinely fixed via TanStack's native `mutation.variables`, lazy localStorage read verified via real unmount/remount, `CartProvider` correctly wraps `RouterProvider` (cross-route persistence verified via real router navigation test), no cart page/drawer/click-to-open, no unhandled rejection (`mutate()` not `mutateAsync()`), cascading test-file changes are strictly additive not weakened, and the atomic `setCount` is safer than design.md's two-step sequence, not a regression.
+
+**JUDGMENT: APPROVED ✅** — no fix round needed.
+
+Skill Resolution — Judge A: paths-injected. Judge B: paths-injected.
+
+## Judgment Day — Round 1 — Target: PR6 code diff (commits `5697e9d`, `63a9851` — api-cache tests, routing coverage, README finalize)
+
+Two blind judges (A, B) reviewed the final PR against `specs/api-cache/spec.md`, `specs/app-shell/spec.md`, and the README's accuracy against this ledger's own history. Both independently mutation-tested the new tests (deliberately broke `gcTime`, `staleTime`, and the Header link; confirmed each broke test went RED; reverted) rather than trusting the tests at face value — the strongest verification standard applied in this project.
+
+| id | lens | location | severity | status | evidence |
+|---|---|---|---|---|---|
+| JD-A-001 / JD-B-001 | judgment-day | `README.md` (5-rounds summary) | WARNING | info | README says "2 real bugs were caught and fixed" but the ledger records 3 distinct confirmed CRITICAL findings (JD-001, JD-002 in the design round; JD-008 in PR4) — undercounts by one. Both judges independently found the identical issue. Non-blocking documentation nit. |
+
+**Confirmed CRITICAL/BLOCKER**: 0
+**Suspect**: 0
+**INFO**: 1 (merged JD-A-001/JD-B-001)
+
+Both judges independently mutation-tested and confirmed: cache-hit tests genuinely assert call-count against the real singleton `queryClient` (RED when `gcTime` reverted to default); revalidation test genuinely advances past 1h AND remounts a real second observer, asserting a second network call (RED when `staleTime` raised); navigation tests use the real router tree and assert real pathname/DOM changes (RED when Header link broken); `queryClient.js`/`Header.jsx` untouched and correct; README scripts/links/PR history all resolve and match reality.
+
+**JUDGMENT: APPROVED ✅** — no fix round needed. All 6 PRs of `itx-front-end-test` are now judgment-day approved.
+
+Skill Resolution — Judge A: fallback-path. Judge B: paths-injected.
