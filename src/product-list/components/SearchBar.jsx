@@ -21,7 +21,7 @@ function SearchBar({ value, onChange }) {
           placeholder="Buscar por marca o modelo"
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          className="text-[1.75rem] uppercase placeholder:text-[1.75rem] placeholder:uppercase md:text-[1.75rem]"
+          className="text-xl uppercase placeholder:text-xl placeholder:uppercase md:text-[1.75rem] md:placeholder:text-[1.75rem]"
         />
       </InputGroup>
     </Field>

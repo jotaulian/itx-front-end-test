@@ -21,7 +21,7 @@ function ProductCard({ product }) {
           alt={`${brand} ${model}`}
           className="aspect-square w-full rounded-md object-contain"
         />
-        <CardTitle>{model}</CardTitle>
+        <CardTitle className="text-base md:text-lg">{model}</CardTitle>
         <CardDescription>{brand}</CardDescription>
       </CardHeader>
       <CardContent className="font-extrabold">{formatPrice(price)}</CardContent>
