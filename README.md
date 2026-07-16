@@ -67,11 +67,17 @@ This project was built following a **Spec-Driven Development** workflow rather t
 writing code directly from the brief. Every phase produced a reviewable artifact before
 implementation started:
 
-- [`openspec/changes/itx-front-end-test/proposal.md`](openspec/changes/itx-front-end-test/proposal.md) — scope, capabilities, risks, rollback plan.
-- [`openspec/changes/itx-front-end-test/specs/`](openspec/changes/itx-front-end-test/specs/) — per-capability requirements, one subfile per capability ([`product-list`](openspec/changes/itx-front-end-test/specs/product-list/spec.md), [`product-detail`](openspec/changes/itx-front-end-test/specs/product-detail/spec.md), [`cart`](openspec/changes/itx-front-end-test/specs/cart/spec.md), [`app-shell`](openspec/changes/itx-front-end-test/specs/app-shell/spec.md), [`api-cache`](openspec/changes/itx-front-end-test/specs/api-cache/spec.md)), written as Given/When/Then scenarios with RFC 2119 keywords.
-- [`openspec/changes/itx-front-end-test/design.md`](openspec/changes/itx-front-end-test/design.md) — architecture decisions, component breakdown, data flow, and sequence diagrams.
-- [`openspec/changes/itx-front-end-test/tasks.md`](openspec/changes/itx-front-end-test/tasks.md) — phased, numbered implementation plan, one phase per chained PR.
-- [`openspec/changes/itx-front-end-test/review-ledger.md`](openspec/changes/itx-front-end-test/review-ledger.md) — adversarial review record.
+The change has since been completed and archived — its full artifact trail lives under
+`openspec/changes/archive/2026-07-16-itx-front-end-test/`, and its 5 specs were merged
+into `openspec/specs/` as the project's living source of truth.
+
+- [`.../proposal.md`](openspec/changes/archive/2026-07-16-itx-front-end-test/proposal.md) — scope, capabilities, risks, rollback plan.
+- [`.../specs/`](openspec/changes/archive/2026-07-16-itx-front-end-test/specs/) — per-capability requirements, one subfile per capability ([`product-list`](openspec/changes/archive/2026-07-16-itx-front-end-test/specs/product-list/spec.md), [`product-detail`](openspec/changes/archive/2026-07-16-itx-front-end-test/specs/product-detail/spec.md), [`cart`](openspec/changes/archive/2026-07-16-itx-front-end-test/specs/cart/spec.md), [`app-shell`](openspec/changes/archive/2026-07-16-itx-front-end-test/specs/app-shell/spec.md), [`api-cache`](openspec/changes/archive/2026-07-16-itx-front-end-test/specs/api-cache/spec.md)), written as Given/When/Then scenarios with RFC 2119 keywords — also live, current, at [`openspec/specs/`](openspec/specs/).
+- [`.../design.md`](openspec/changes/archive/2026-07-16-itx-front-end-test/design.md) — architecture decisions, component breakdown, data flow, and sequence diagrams.
+- [`.../tasks.md`](openspec/changes/archive/2026-07-16-itx-front-end-test/tasks.md) — phased, numbered implementation plan, one phase per chained PR.
+- [`.../review-ledger.md`](openspec/changes/archive/2026-07-16-itx-front-end-test/review-ledger.md) — adversarial review record.
+- [`.../verify-report.md`](openspec/changes/archive/2026-07-16-itx-front-end-test/verify-report.md) — final `sdd-verify` pass against specs/design/tasks.
+- [`.../archive-report.md`](openspec/changes/archive/2026-07-16-itx-front-end-test/archive-report.md) — archive closeout record.
 
 Before implementation began, the design went through a **Judgment Day** adversarial
 review round: two independent reviewers ("blind judges") audited `design.md` against
