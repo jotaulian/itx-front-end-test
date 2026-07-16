@@ -90,13 +90,13 @@ Chain strategy: stacked-to-main
 
 ## Phase 6: api-cache tests, routing coverage, finalize (PR6)
 
-- [ ] 6.1 Fake-timer test: repeat `['products']` query <1h uses cache, no network call
-- [ ] 6.2 Fake-timer test: same rule for `['products', id]`
-- [ ] 6.3 Fake-timer test: query >1h old triggers refetch on next access, cache updated (Revalidation After Expiry)
-- [ ] 6.4 RTL test (JD-007): PLP card click navigates to PDP
-- [ ] 6.5 RTL test (JD-007): `BackToListLink` click navigates PDP→`/`
-- [ ] 6.6 RTL test (JD-007): header title/icon click navigates PDP→`/`
-- [ ] 6.7 RTL test (JD-007): breadcrumb root link navigates PDP→`/`
+- [x] 6.1 Fake-timer test: repeat `['products']` query <1h uses cache, no network call
+- [x] 6.2 Fake-timer test: same rule for `['products', id]`
+- [x] 6.3 Fake-timer test: query >1h old triggers refetch on next access, cache updated (Revalidation After Expiry)
+- [x] 6.4 RTL test (JD-007): PLP card click navigates to PDP
+- [x] 6.5 RTL test (JD-007): `BackToListLink` click navigates PDP→`/`
+- [x] 6.6 RTL test (JD-007): header title/icon click navigates PDP→`/`
+- [x] 6.7 RTL test (JD-007): breadcrumb root link navigates PDP→`/`
 - [ ] 6.8 Finalize `README.md`: confirm start/build/test/lint instructions accurate, SDD methodology section links all 5 artifacts
 - [ ] 6.9 Run `npx vitest run`, `npx vite build`, `npx eslint .` — all pass clean
 - [ ] 6.10 Commit: `test(api-cache,app-shell): TTL + revalidation + routing coverage`; `docs: finalize README`
