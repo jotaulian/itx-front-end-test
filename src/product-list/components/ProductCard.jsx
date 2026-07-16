@@ -14,17 +14,17 @@ function ProductCard({ product }) {
   const { brand, model, price, imgUrl } = product
 
   return (
-    <Card>
+    <Card className="shadow-none ring-2 ring-input transition-colors hover:ring-black">
       <CardHeader>
         <img
           src={imgUrl}
           alt={`${brand} ${model}`}
-          className="aspect-square w-full rounded-md object-cover"
+          className="aspect-square w-full rounded-md object-contain"
         />
         <CardTitle>{model}</CardTitle>
         <CardDescription>{brand}</CardDescription>
       </CardHeader>
-      <CardContent>{formatPrice(price)}</CardContent>
+      <CardContent className="font-extrabold">{formatPrice(price)}</CardContent>
     </Card>
   )
 }

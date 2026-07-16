@@ -20,7 +20,7 @@ function ProductListPage() {
   )
 
   return (
-    <div data-testid="product-list-page" className="flex flex-col gap-4 p-4">
+    <div data-testid="product-list-page" className="flex flex-col gap-8 p-4">
       <SearchBar value={search} onChange={setSearch} />
 
       {isPending && <ProductGridSkeleton />}

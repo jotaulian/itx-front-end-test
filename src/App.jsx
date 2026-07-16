@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <Header />
-      <main>
+      <main className="mx-auto w-full max-w-7xl">
         <Outlet />
       </main>
     </>

@@ -10,7 +10,7 @@ function ProductGrid({ products }) {
     <ul
       role="list"
       data-testid="product-grid"
-      className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+      className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4"
     >
       {products.map((product) => (
         <li key={product.id}>

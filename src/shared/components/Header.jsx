@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShoppingBagIcon } from 'lucide-react'
+import { ShoppingBagIcon, ShoppingCartIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { useCart } from '@/cart/useCart.js'
 import Breadcrumbs from './Breadcrumbs.jsx'
@@ -13,7 +13,7 @@ function Header() {
   const { count } = useCart()
 
   return (
-    <header className="flex items-center justify-between gap-4 border-b p-4">
+    <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b bg-background p-4">
       <div className="flex items-center gap-4">
         <Link to="/" className="flex items-center gap-2 text-sm font-semibold">
           <ShoppingBagIcon data-icon aria-hidden="true" />
@@ -21,7 +21,10 @@ function Header() {
         </Link>
         <Breadcrumbs />
       </div>
-      <Badge data-testid="cart-count-badge">{count}</Badge>
+      <Badge data-testid="cart-count-badge" className="text-sm [&>svg]:size-4!">
+        <ShoppingCartIcon data-icon="inline-start" aria-hidden="true" />
+        {count}
+      </Badge>
     </header>
   )
 }

@@ -7,7 +7,7 @@ const PLACEHOLDER_COUNT = 8
 // arrives.
 function ProductGridSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" data-testid="product-grid-skeleton">
+    <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-4" data-testid="product-grid-skeleton">
       {Array.from({ length: PLACEHOLDER_COUNT }).map((_, index) => (
         <Skeleton key={index} className="aspect-[3/4] w-full rounded-xl" />
       ))}

@@ -92,7 +92,7 @@ function ProductDetailPage() {
           <img
             src={product.imgUrl}
             alt={`${product.brand} ${product.model}`}
-            className="aspect-square w-full rounded-xl object-cover"
+            className="aspect-square w-full rounded-xl object-contain"
           />
 
           <div className="flex flex-col gap-6">

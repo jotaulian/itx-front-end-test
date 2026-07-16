@@ -8,10 +8,12 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/in
 function SearchBar({ value, onChange }) {
   return (
     <Field>
-      <FieldLabel htmlFor="product-search">Buscar</FieldLabel>
-      <InputGroup>
+      <FieldLabel htmlFor="product-search" className="sr-only">
+        Buscar
+      </FieldLabel>
+      <InputGroup className="border-b-[2px]">
         <InputGroupAddon>
-          <SearchIcon data-icon aria-hidden="true" />
+          <SearchIcon data-icon aria-hidden="true" className="size-7" />
         </InputGroupAddon>
         <InputGroupInput
           id="product-search"
@@ -19,6 +21,7 @@ function SearchBar({ value, onChange }) {
           placeholder="Buscar por marca o modelo"
           value={value}
           onChange={(event) => onChange(event.target.value)}
+          className="text-[1.75rem] uppercase placeholder:text-[1.75rem] placeholder:uppercase md:text-[1.75rem]"
         />
       </InputGroup>
     </Field>
