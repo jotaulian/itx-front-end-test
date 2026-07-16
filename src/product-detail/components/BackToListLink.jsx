@@ -17,7 +17,13 @@ import { cn } from '@/lib/utils'
 // semantics and only borrows the Button variant's visual styling.
 function BackToListLink() {
   return (
-    <Link to="/" className={cn(buttonVariants({ variant: 'link' }), 'w-fit px-0 text-muted-foreground')}>
+    <Link
+      to="/"
+      className={cn(
+        buttonVariants({ variant: 'link' }),
+        'w-fit px-0 text-muted-foreground has-data-[icon=inline-start]:pl-0',
+      )}
+    >
       <ArrowLeftIcon data-icon="inline-start" />
       Volver al listado
     </Link>
