@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
 import { CartProvider } from '@/cart/CartContext.jsx'
 import Header from './Header.jsx'
@@ -12,10 +13,13 @@ const routes = [
 
 function renderAt(path) {
   const router = createMemoryRouter(routes, { initialEntries: [path] })
+  const queryClient = new QueryClient()
   render(
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>,
+    <QueryClientProvider client={queryClient}>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </QueryClientProvider>,
   )
 }
 

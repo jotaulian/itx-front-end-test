@@ -14,11 +14,11 @@ export const routes = [
       {
         path: 'product/:id',
         element: <ProductDetailPage />,
-        // `crumb` is a placeholder until PR4 wires real Marca/Modelo data
-        // (e.g. from the cached ['products', id] query). Breadcrumbs only
-        // needs a string here — the mechanism does not change in PR4.
+        // `crumb: true` just marks this route as needing a second
+        // breadcrumb level; Breadcrumbs derives the actual label (the
+        // product's Modelo) from the shared ['products', id] query cache.
         handle: {
-          crumb: (params) => `Producto ${params.id}`,
+          crumb: true,
         },
       },
     ],

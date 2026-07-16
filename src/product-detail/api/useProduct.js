@@ -8,5 +8,6 @@ export function useProduct(id) {
   return useQuery({
     queryKey: ['products', id],
     queryFn: () => apiClient(`/api/product/${id}`),
+    enabled: Boolean(id),
   })
 }
