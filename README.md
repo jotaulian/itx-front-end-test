@@ -3,7 +3,7 @@
 Front-end technical test for Inditex: a mobile-first shopping single-page app with a
 product list (PLP) and product detail (PDP) view, backed by the public API
 `https://itx-frontend-test.onrender.com/`. Built with Vite + React (JavaScript, no
-TypeScript). Source brief: `1. ITX - Front End Test 1.pdf`.
+TypeScript).
 
 ## Prerequisites
 
